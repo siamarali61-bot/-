@@ -1,0 +1,178 @@
+{
+  "entities": {
+    "User": {
+      "title": "User",
+      "description": "User profile for customer, seller, or admin in Dalozi Store",
+      "type": "object",
+      "properties": {
+        "id": {
+          "type": "string",
+          "description": "Unique user ID (from Firebase Auth UID or generated for phone accounts)"
+        },
+        "name": {
+          "type": "string",
+          "description": "Full name of the user"
+        },
+        "email": {
+          "type": "string",
+          "description": "Optional email address"
+        },
+        "phone": {
+          "type": "string",
+          "description": "Algerian phone number formatted with +213"
+        },
+        "role": {
+          "type": "string",
+          "enum": ["customer", "seller", "admin"],
+          "description": "Role of the user in Dalozi Store"
+        },
+        "provider": {
+          "type": "string",
+          "enum": ["phone", "google", "facebook"],
+          "description": "Authentication provider"
+        },
+        "loyaltyPoints": {
+          "type": "number",
+          "description": "Loyalty points accumulated by customer"
+        },
+        "createdAt": {
+          "type": "string",
+          "format": "date-time",
+          "description": "Creation timestamp in ISO 8601"
+        }
+      },
+      "required": ["id", "name", "role", "createdAt"]
+    },
+    "Order": {
+      "title": "Order",
+      "description": "Customer order placed in Dalozi Store with Cash On Delivery (COD)",
+      "type": "object",
+      "properties": {
+        "id": {
+          "type": "string",
+          "description": "Order identifier"
+        },
+        "customerName": {
+          "type": "string",
+          "description": "Customer recipient name"
+        },
+        "customerPhone": {
+          "type": "string",
+          "description": "Algerian contact phone number"
+        },
+        "wilayaCode": {
+          "type": "number",
+          "description": "Algerian wilaya code (1 to 58)"
+        },
+        "deliveryAddress": {
+          "type": "string",
+          "description": "Delivery address or municipality in Algeria"
+        },
+        "totalAmount": {
+          "type": "number",
+          "description": "Total price in Algerian Dinars (DZD)"
+        },
+        "status": {
+          "type": "string",
+          "enum": ["pending", "confirmed", "shipped", "delivered", "cancelled"],
+          "description": "Current order lifecycle status"
+        },
+        "paymentMethod": {
+          "type": "string",
+          "enum": ["cod"],
+          "description": "Cash on delivery guarantee"
+        },
+        "createdAt": {
+          "type": "string",
+          "format": "date-time",
+          "description": "Order creation timestamp"
+        }
+      },
+      "required": ["id", "customerName", "customerPhone", "wilayaCode", "totalAmount", "status", "createdAt"]
+    },
+    "ChatMessage": {
+      "title": "ChatMessage",
+      "description": "Chat history message with Gemini AI Stylist",
+      "type": "object",
+      "properties": {
+        "id": {
+          "type": "string",
+          "description": "Message ID"
+        },
+        "sender": {
+          "type": "string",
+          "enum": ["user", "assistant"],
+          "description": "Sender role"
+        },
+        "text": {
+          "type": "string",
+          "description": "Message content text"
+        },
+        "timestamp": {
+          "type": "string",
+          "format": "date-time",
+          "description": "Message timestamp"
+        }
+      },
+      "required": ["id", "sender", "text", "timestamp"]
+    },
+    "Product": {
+      "title": "Product",
+      "description": "Luxury Algerian product listing with Instagram creator attribution",
+      "type": "object",
+      "properties": {
+        "id": {
+          "type": "string",
+          "description": "Product unique identifier"
+        },
+        "title": {
+          "type": "string",
+          "description": "Product title in English"
+        },
+        "titleAr": {
+          "type": "string",
+          "description": "Product title in Arabic"
+        },
+        "category": {
+          "type": "string",
+          "description": "Product category identifier"
+        },
+        "price": {
+          "type": "number",
+          "description": "Product selling price in DZD"
+        },
+        "descriptionAr": {
+          "type": "string",
+          "description": "Luxury product description in Arabic"
+        },
+        "instagramHandle": {
+          "type": "string",
+          "description": "Instagram username/handle of creator"
+        },
+        "instagramPostUrl": {
+          "type": "string",
+          "description": "Direct link to original Instagram post"
+        }
+      },
+      "required": ["id", "titleAr", "category", "price", "descriptionAr"]
+    }
+  },
+  "firestore": {
+    "/users/{userId}": {
+      "schema": "User",
+      "description": "Persistent profiles for Dalozi Store registered users"
+    },
+    "/orders/{orderId}": {
+      "schema": "Order",
+      "description": "Persistent orders placed by Algerian customers"
+    },
+    "/products/{productId}": {
+      "schema": "Product",
+      "description": "Persistent catalog products in Dalozi Store"
+    },
+    "/chats/{chatId}/messages/{messageId}": {
+      "schema": "ChatMessage",
+      "description": "Gemini AI Stylist conversation messages"
+    }
+  }
+}
